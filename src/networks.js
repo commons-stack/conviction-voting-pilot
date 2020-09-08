@@ -5,11 +5,10 @@ const networks = {
   mainnet: {
     chainId: 1,
     ensRegistry: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
-    defaultEthNode: 'wss://mainnet.eth.aragon.network/ws',
+    defaultEthNode:
+      'wss://mainnet.infura.io/ws/v3/fb8cf9d97ab44df7b4a268b282c04803',
     defaultSubgraphUrl:
-      'https://graph.backend.aragon.org/subgraphs/name/1hive/aragon-conviction-voting-mainnet',
-    generalSubgraphUrl:
-      'https://graph.backend.aragon.org/subgraphs/name/aragon/aragon-mainnet',
+      'https://api.thegraph.com/subgraphs/name/1hive/aragon-conviction-voting-mainnet',
     name: 'Mainnet',
     orgAddress: '0xaAf56C0D604dDB88bBe451ae0db4580Ca3D49c0A',
     type: 'mainnet',
@@ -28,8 +27,10 @@ const networks = {
     chainId: 100,
     ensRegistry: '0xaafca6b0c89521752e559650206d7c925fd0e530',
     defaultEthNode: 'https://xdai.poanetwork.dev/',
+    defaultSubgraphUrl:
+      'https://api.thegraph.com/subgraphs/name/1hive/aragon-c-v-beta-xdai',
     name: 'xDai',
-    orgAddress: '',
+    orgAddress: '0x1cDC45012c4A20FF96a273e83B9C4173948F8b4d',
     type: 'xdai',
   },
 }

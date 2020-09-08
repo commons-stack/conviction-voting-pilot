@@ -1,127 +1,22 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import {
-  Button,
-  Checkbox,
-  DropDown,
-  Field,
-  GU,
-  Info,
-  Link,
-  isAddress,
-  TextInput,
-  useTheme,
-} from '@aragon/ui'
+import { Button, TextInput, Info, Field, GU, Link } from '@aragon/ui'
 import { useAppState } from '../providers/AppState'
 
-import BigNumber from '../lib/bigNumber'
-import { toDecimals } from '../lib/math-utils'
-import { formatTokenAmount } from '../lib/token-utils'
-import { calculateThreshold, getMaxConviction } from '../lib/conviction'
-
 import { ZERO_ADDR } from '../constants'
-
-const NULL_PROPOSAL_TYPE = -1
-const FUNDING_PROPOSAL = 1
-
-const BASE_IPFS_URI = 'https://ipfs.eth.aragon.network/ipfs/'
-const TC_IPFS_HASH = 'QmTSDxWVFnNUis8ZJ7aBfH2z71Jc4N62YLYM9PzJz8DUjt'
 
 const DEFAULT_FORM_DATA = {
   title: '',
   link: '',
-  proposalType: NULL_PROPOSAL_TYPE,
-  amount: {
-    value: '0',
-    valueBN: new BigNumber(0),
-  },
-  beneficiary: '',
 }
 
 const AddProposalPanel = React.memo(({ onSubmit }) => {
-  const [termsAccepted, setTermsAccepted] = useState(false)
-  const theme = useTheme()
-  const {
-    alpha,
-    maxRatio,
-    requestToken,
-    stakeToken,
-    totalSupply,
-    vaultBalance,
-    weight,
-  } = useAppState()
+  const { accountBalance } = useAppState()
 
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
-
-  const fundingMode = formData.proposalType === FUNDING_PROPOSAL
-
-  const handleAmountEditMode = useCallback(
-    editMode => {
-      setFormData(formData => {
-        const { amount } = formData
-
-        const newValue = amount.valueBN.gte(0)
-          ? formatTokenAmount(
-              amount.valueBN,
-              stakeToken.decimals,
-              false,
-              false,
-              {
-                commas: !editMode,
-                replaceZeroBy: editMode ? '' : '0',
-                rounding: stakeToken.decimals,
-              }
-            )
-          : ''
-
-        return {
-          ...formData,
-          amount: {
-            ...amount,
-            value: newValue,
-          },
-        }
-      })
-    },
-    [stakeToken]
-  )
-
-  const handleProposalTypeChange = useCallback(selected => {
-    setFormData(formData => ({
-      ...formData,
-      proposalType: selected,
-    }))
-  }, [])
 
   const handleTitleChange = useCallback(event => {
     const updatedTitle = event.target.value
     setFormData(formData => ({ ...formData, title: updatedTitle }))
-  }, [])
-
-  const handleAmountChange = useCallback(
-    event => {
-      const updatedAmount = event.target.value
-
-      const newAmountBN = new BigNumber(
-        isNaN(updatedAmount)
-          ? -1
-          : toDecimals(updatedAmount, stakeToken.decimals)
-      )
-
-      setFormData(formData => ({
-        ...formData,
-        amount: {
-          value: updatedAmount,
-          valueBN: newAmountBN,
-        },
-      }))
-    },
-    [stakeToken.decimals]
-  )
-
-  const handleBeneficiaryChange = useCallback(event => {
-    const updatedBeneficiary = event.target.value
-
-    setFormData(formData => ({ ...formData, beneficiary: updatedBeneficiary }))
   }, [])
 
   const handleLinkChange = useCallback(event => {
@@ -133,82 +28,43 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
     event => {
       event.preventDefault()
 
-      const { amount, beneficiary = ZERO_ADDR, link, title } = formData
-      const convertedAmount = amount.valueBN.toFixed(0)
+      const { link, title } = formData
       onSubmit({
         title,
         link,
-        amount: convertedAmount,
-        beneficiary: beneficiary || ZERO_ADDR,
+        amount: 0,
+        beneficiary: ZERO_ADDR,
       })
     },
     [formData, onSubmit]
   )
 
   const errors = useMemo(() => {
-    const errors = []
-
-    const { amount, beneficiary, title } = formData
-    if (requestToken) {
-      if (amount.valueBN.eq(-1)) {
-        errors.push('Invalid requested amount')
-      }
-
-      if (beneficiary && !isAddress(beneficiary)) {
-        errors.push('Beneficiary is not a valid ethereum address')
-      }
-
-      return errors
-    }
+    const { title } = formData
 
     return !title
-  }, [formData, requestToken])
+  }, [formData])
 
-  const neededThreshold = useMemo(() => {
-    const threshold = calculateThreshold(
-      formData.amount.valueBN,
-      vaultBalance,
-      totalSupply,
-      alpha,
-      maxRatio,
-      weight
+  const submitDisabled = !formData.title || !formData.link
+
+  if (accountBalance.toString() === '0') {
+    return (
+      <Info mode="error">
+        You must have CSTK tokens to propose a grant. Switch to the address that
+        holds your CSTK Tokens or{' '}
+        <Link external href="https://commonsstack.org/apply">
+          Apply to join the Trusted Seed
+        </Link>
+        .
+      </Info>
     )
-
-    const max = getMaxConviction(totalSupply, alpha)
-    return Math.round((threshold / max) * 100)
-  }, [alpha, formData.amount, maxRatio, totalSupply, vaultBalance, weight])
-
-  const submitDisabled =
-    formData.proposalType === NULL_PROPOSAL_TYPE ||
-    (formData.proposalType === FUNDING_PROPOSAL &&
-      (formData.amount.value === '0' || !formData.beneficiary)) ||
-    !formData.title ||
-    !termsAccepted
+  }
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <Field
-        label="Select proposal type"
-        css={`
-          margin-top: ${3 * GU}px;
-        `}
-      >
-        <DropDown
-          header="Select proposal type"
-          placeholder="Proposal type"
-          selected={formData.proposalType}
-          onChange={handleProposalTypeChange}
-          items={['Signaling proposal', 'Funding proposal']}
-          required
-          wide
-        />
-      </Field>
       <Info mode="info">
-        Remember to{' '}
-        <Link href="https://forum.aragon.org/t/about-the-cv-pilot-category/2255">
-          add your proposal to the forum
-        </Link>{' '}
-        first, and then add the link here.
+        Please use the Gitcoin Grant title as the title for your proposal and
+        include the link to the Grant down below.
       </Info>
       <Field
         label="Title"
@@ -223,60 +79,14 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
           required
         />
       </Field>
-      {requestToken && fundingMode && (
-        <>
-          <Field
-            label="Requested Amount"
-            onFocus={() => handleAmountEditMode(true)}
-            onBlur={() => handleAmountEditMode(false)}
-          >
-            <TextInput
-              value={formData.amount.value}
-              onChange={handleAmountChange}
-              required
-              wide
-              adornment={
-                <span
-                  css={`
-                    background: ${theme.background};
-                    border-left: 1px solid ${theme.border};
-                    border-radius: 0px ${4}px ${4}px 0px;
-                    padding: 7px ${1.5 * GU}px;
-                  `}
-                >
-                  {requestToken.symbol}
-                </span>
-              }
-              adornmentPosition="end"
-              adornmentSettings={{ padding: 1 }}
-            />
-          </Field>
-          <Field label="Beneficiary">
-            <TextInput
-              onChange={handleBeneficiaryChange}
-              value={formData.beneficiary}
-              wide
-              required
-            />
-          </Field>
-        </>
-      )}
       <Field label="Link">
-        <TextInput onChange={handleLinkChange} value={formData.link} wide />
+        <TextInput
+          onChange={handleLinkChange}
+          value={formData.link}
+          wide
+          required
+        />
       </Field>
-      <label
-        css={`
-          margin-bottom: ${2 * GU}px;
-          display: flex;
-          align-items: center;
-        `}
-      >
-        <Checkbox checked={termsAccepted} onChange={setTermsAccepted} />I accept
-        the&nbsp;
-        <Link href={`${BASE_IPFS_URI}${TC_IPFS_HASH}`} external>
-          Terms and Conditions
-        </Link>
-      </label>
       <Button
         wide
         mode="strong"
@@ -288,60 +98,6 @@ const AddProposalPanel = React.memo(({ onSubmit }) => {
       >
         Submit
       </Button>
-      {formData.proposalType !== NULL_PROPOSAL_TYPE && (
-        <Info
-          title="Action"
-          css={`
-            margin-bottom: ${3 * GU}px;
-          `}
-        >
-          {fundingMode ? (
-            <>
-              <span>
-                This action will create a proposal which can be voted on
-              </span>{' '}
-              <span
-                css={`
-                  font-weight: 700;
-                `}
-              >
-                by staking {stakeToken.symbol}.
-              </span>{' '}
-              <span>
-                The action will be executable if the accrued total stake reaches
-                above the threshold.
-              </span>
-            </>
-          ) : (
-            <>
-              <span>
-                This action will create a proposal which can be voted on,
-              </span>{' '}
-              <span
-                css={`
-                  font-weight: 700;
-                `}
-              >
-                it's a proposal without a requested amount.
-              </span>{' '}
-              <span>The action will not be executable.</span>
-            </>
-          )}
-        </Info>
-      )}
-      {fundingMode && formData.amount.valueBN.gte(0) && (
-        <Info
-          mode={neededThreshold ? 'info' : 'warning'}
-          css={`
-            margin-top: ${2 * GU}px;
-          `}
-        >
-          {neededThreshold
-            ? `Required conviction for requested amount in order for the proposal to
-          pass is ~%${neededThreshold}`
-            : `Proposal might never pass with requested amount`}
-        </Info>
-      )}
       {errors.length > 0 && (
         <Info
           mode="warning"

@@ -2,7 +2,7 @@ import React from 'react'
 import { GU, Link as AragonLink, textStyle, useTheme } from '@aragon/ui'
 import styled from 'styled-components'
 import Layout from './Layout'
-import antSvg from '../assets/logo-ant.svg'
+import antSvg from '../assets/logo-cs.svg'
 
 export default function Footer({ compact }) {
   const theme = useTheme()
@@ -49,19 +49,19 @@ export default function Footer({ compact }) {
                 margin-bottom: ${1.5 * GU}px;
               `}
             >
-              Community
+              Commons Stack
             </h5>
-            <Link href="https://aragon.org/blog" external>
-              Blog
+            <Link href="https://commonsstack.org/" external>
+              Home
             </Link>
-            <Link href="https://github.com/aragon/" external>
-              Github
+            <Link href="https://commonsstack.org/abc" external>
+              Components
             </Link>
-            <Link href="https://twitter.com/aragonproject" external>
-              Twitter
+            <Link href="https://commonsstack.org/community" external>
+              Community
             </Link>
-            <Link href="https://forum.aragon.org/" external>
-              Forum
+            <Link href="https://commonsstack.org/apply" external>
+              Apply
             </Link>
           </div>
           <div>
@@ -71,13 +71,25 @@ export default function Footer({ compact }) {
                 margin-bottom: ${1.5 * GU}px;
               `}
             >
-              Tools
+              Join Us
             </h5>
-            <Link href="https://wiki.aragon.org/" external>
-              Wiki
+            <Link href="https://twitter.com/commonsstack" external>
+              Twitter
             </Link>
-            <Link href="https://connect.aragon.org/" external>
-              Connect
+            <Link href="https://medium.com/commonsstack" external>
+              Medium
+            </Link>
+            <Link href="https://t.me/joinchat/HGrjjRS2PoowbH1ODuefuA" external>
+              Telegram
+            </Link>
+            <Link
+              href="https://riot.im/app/#/group/+commons-stack:matrix.org"
+              external
+            >
+              Riot Chat
+            </Link>
+            <Link href="https://github.com/commons-stack" external>
+              Github
             </Link>
           </div>
         </div>

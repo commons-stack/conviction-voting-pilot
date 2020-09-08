@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { textStyle, GU } from '@aragon/ui'
 import { useAppState } from '../providers/AppState'
-import logoAaSvg from '../assets/logo-aa.svg'
+import logoCSSvg from '../assets/logo-cs.svg'
 
 function Header() {
   const { appearance, setAppearance } = useAppState()
@@ -28,7 +28,7 @@ function Header() {
         `}
       >
         <img
-          src={logoAaSvg}
+          src={logoCSSvg}
           width="40"
           onClick={toggleAppearance}
           css={`
@@ -45,7 +45,7 @@ function Header() {
             ${textStyle('title4')}
           `}
         >
-          Aragon Association
+          Commons Stack
         </div>
       </div>
     </div>

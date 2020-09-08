@@ -12,7 +12,6 @@ import {
 } from '@aragon/ui'
 import AccountModule from './Account/AccountModule'
 import Carousel from './Carousel/Carousel'
-import { useUniswapAntPrice } from '../hooks/useUniswapAntPrice'
 import BigNumber from '../lib/bigNumber'
 import { formatTokenAmount } from '../lib/token-utils'
 import { useAppState } from '../providers/AppState'
@@ -33,7 +32,6 @@ const Metrics = React.memo(function Metrics({
   const { layoutName } = useLayout()
   const theme = useTheme()
   const compactMode = layoutName === 'small'
-  const uniAntPrice = useUniswapAntPrice()
 
   const myActiveTokens = useMemo(() => {
     if (!myStakes) {
@@ -53,9 +51,13 @@ const Metrics = React.memo(function Metrics({
 
   const carouselContent = useMemo(
     () => [
-      <CarouselBalance label="Total" amount={accountBalance} symbol="ANT" />,
-      <CarouselBalance label="Active" amount={myActiveTokens} symbol="ANT" />,
-      <CarouselBalance label="Inactive" amount={inactiveTokens} symbol="ANT" />,
+      <CarouselBalance label="Total" amount={accountBalance} symbol="CSTK" />,
+      <CarouselBalance label="Active" amount={myActiveTokens} symbol="CSTK" />,
+      <CarouselBalance
+        label="Inactive"
+        amount={inactiveTokens}
+        symbol="CSTK"
+      />,
     ],
     [accountBalance, myActiveTokens, inactiveTokens]
   )
@@ -130,14 +132,19 @@ const Metrics = React.memo(function Metrics({
                     What is voting influence?
                   </h3>
                   <Help hint="What is voting influence?">
-                    We captured a snapshot of your ANT balance on 2020/08/26
-                    that has been translated into your current voting influence.{' '}
+                    You can get{' '}
                     <Link
                       external
-                      href="https://aragon.org/blog/introducing-the-conviction-funding-pilot"
+                      href="https://medium.com/commonsstack/cstk-the-token-of-the-commons-stack-trusted-seed-931978625c61"
                     >
-                      Learn more
+                      CSTK tokens
+                    </Link>{' '}
+                    for contributing to the Commons Stack mission and receiving
+                    praise or by{' '}
+                    <Link external href="https://commonsstack.org/donate">
+                      donating to support us
                     </Link>
+                    .
                   </Help>
                 </div>
               </div>
@@ -169,26 +176,6 @@ const Metrics = React.memo(function Metrics({
               )}
             </>
           )}
-          <Metric
-            label="ANT price"
-            value={`$${Number(uniAntPrice).toFixed(2)}`}
-            uppercased
-          />
-          <div
-            css={`
-              width: 100%;
-              height: 1px;
-              border: 1px solid ${theme.border};
-              margin: ${3 * GU}px 0;
-            `}
-          />
-          <TokenBalance
-            label="Pilot Funds"
-            value={commonPool}
-            token={requestToken}
-            symbol="ANT"
-            uppercased
-          />
         </div>
       </Box>
 
@@ -198,7 +185,7 @@ const Metrics = React.memo(function Metrics({
             label="Token Supply"
             value={totalSupply}
             token={stakeToken}
-            symbol="ANT"
+            symbol="CSTK"
           />
         </MetricContainer>
         <MetricContainer>
@@ -206,7 +193,7 @@ const Metrics = React.memo(function Metrics({
             label="Active"
             value={totalActiveTokens}
             token={stakeToken}
-            symbol="ANT"
+            symbol="CSTK"
           />
         </MetricContainer>
         <Metric label="Proposals" value={amountOfProposals} />
@@ -301,21 +288,6 @@ function CarouselBalance({ amount, decimals = 18, label, symbol = 'ANT' }) {
 }
 
 function TokenBalance({ label, token, value, symbol, uppercased }) {
-  const theme = useTheme()
-  const uniAntPrice = useUniswapAntPrice()
-
-  const valueFormatted = formatTokenAmount(
-    value.toFixed(0),
-    token.decimals,
-    undefined,
-    false,
-    {
-      commas: false,
-    }
-  ).replace(/,/g, '')
-
-  const antFinalPrice = Number(uniAntPrice) * Number(valueFormatted)
-
   return (
     <>
       <Metric
@@ -324,14 +296,6 @@ function TokenBalance({ label, token, value, symbol, uppercased }) {
         secondaryValue={symbol}
         uppercased={uppercased}
       />
-      <div
-        css={`
-          ${textStyle('body3')};
-          color: ${theme.contentSecondary};
-        `}
-      >
-        {`$ ${antFinalPrice.toLocaleString()}`}
-      </div>
     </>
   )
 }

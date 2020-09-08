@@ -60,8 +60,7 @@ function ConvictionBanner() {
               ${compactMode && `font-size: ${1.75 * GU}px;`}
             `}
           >
-            We just released the Conviction funding pilot! Learn about how to
-            participate!
+            Choose which Gitcoin Grants will receive extra matching via Panvala!
             <ButtonBase
               focusRingRadius={RADIUS}
               focusRingSpacing={2}
@@ -94,9 +93,9 @@ function ConvictionBanner() {
                   top: 1px;
                 }
               `}
-              href="https://aragon.org/blog/introducing-the-conviction-funding-pilot"
+              href="https://medium.com/commonsstack"
             >
-              Discover
+              Learn more
             </ButtonBase>
           </p>
           <ButtonBase

@@ -1,15 +1,10 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react'
 import { useViewport } from 'use-viewport'
-import { Button, DropDown, useTheme, IconAdd, GU } from '@aragon/ui'
+import { Button, useTheme, IconAdd, GU } from '@aragon/ui'
 import PropTypes from 'prop-types'
 
 import TextFilter from './TextFilter'
-import DropdownFilter from './DropdownFilter'
 import { useWallet } from '../../providers/Wallet'
-
-const PROPOSAL_TYPE_LABELS = ['All', 'Funding', 'Signaling']
-
-const PROPOSAL_STATUS_LABELS = ['All', 'Open', 'Closed']
 
 const FilterBar = React.memo(
   ({
@@ -44,9 +39,6 @@ const FilterBar = React.memo(
     const handlerTextFilterClick = useCallback(() => {
       setTextFieldVisible(true)
     }, [setTextFieldVisible])
-
-    const statusFilterDisabled =
-      proposalExecutionStatusFilter === 2 || status !== 'connected'
 
     if (compactMode && status !== 'connected') {
       return (
@@ -86,30 +78,6 @@ const FilterBar = React.memo(
                 display: flex;
               `}
             >
-              <DropDown
-                header="Type"
-                selected={proposalTypeFilter}
-                onChange={handleProposalTypeFilterChange}
-                items={PROPOSAL_TYPE_LABELS}
-              />
-              <DropDown
-                header="Status"
-                selected={proposalExecutionStatusFilter}
-                onChange={handleExecutionStatusFilterChange}
-                items={PROPOSAL_STATUS_LABELS}
-                css={`
-                  margin-left: ${1.5 * GU}px;
-                `}
-              />
-              {!statusFilterDisabled && (
-                <DropdownFilter
-                  proposalsSize={proposalsSize}
-                  proposalStatusFilter={proposalStatusFilter}
-                  handleProposalStatusFilterChange={
-                    handleProposalStatusFilterChange
-                  }
-                />
-              )}
               <div
                 css={`
                   flex-grow: 1;

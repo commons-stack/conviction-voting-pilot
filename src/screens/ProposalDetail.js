@@ -242,7 +242,8 @@ function ProposalDetail({
                   >
                     {beneficiary === ZERO_ADDR && <SignalingIndicator />}{' '}
                     {status !== 'Cancelled' ? (
-                      requestToken && (
+                      requestToken &&
+                      !signalingProposal && (
                         <Amount
                           requestedAmount={requestedAmount}
                           requestToken={requestToken}
