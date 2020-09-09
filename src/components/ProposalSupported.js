@@ -7,7 +7,10 @@ const LIGHT_INFO_SURFACE_COLOR = '#F8FDFE'
 
 function VoteCast({ amountOfTokens }) {
   const theme = useTheme()
-  const { appearance } = useAppState()
+  const {
+    appearance,
+    stakeToken: { decimals, symbol },
+  } = useAppState()
 
   return (
     <div
@@ -61,8 +64,8 @@ function VoteCast({ amountOfTokens }) {
           `}
           >
             You supported this proposal with{' '}
-            {TokenAmount.format(amountOfTokens.toFixed(), 18, {
-              symbol: 'ANT',
+            {TokenAmount.format(amountOfTokens.toFixed(), decimals, {
+              symbol,
             })}
           </div>
         </div>

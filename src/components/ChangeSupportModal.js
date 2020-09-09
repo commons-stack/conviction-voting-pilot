@@ -11,7 +11,8 @@ import {
   useTheme,
   GU,
 } from '@aragon/ui'
-import antLogo from '../assets/logo-ant.svg'
+import tokenLogo from '../assets/logo-cs.svg'
+import { useAppState } from '../providers/AppState'
 
 function ChangeSupportModal({
   accountBalance,
@@ -30,6 +31,7 @@ function ChangeSupportModal({
   const [buttonDisabled, setButtonDisabled] = useState(false)
   const theme = useTheme()
   const { below } = useViewport()
+  const { stakeToken } = useAppState()
 
   const compactMode = below('medium')
 
@@ -149,6 +151,11 @@ function ChangeSupportModal({
     tokensToStake,
   ])
 
+  const formatTokens = amount =>
+    TokenAmount.format(amount, stakeToken.decimals, {
+      symbol: stakeToken.symbol,
+    })
+
   return (
     <Modal visible={modalVisible} onClose={onModalClose}>
       <div
@@ -199,7 +206,7 @@ function ChangeSupportModal({
               `}
           `}
         >
-          <AntToken />
+          <TokenLogo />
           <div
             css={`
               flex-grow: 1;
@@ -232,11 +239,7 @@ function ChangeSupportModal({
               margin-left: ${1 * GU}px;
           `}
             >
-              (
-              {TokenAmount.format(tokensToStake.toFixed(0), 18, {
-                symbol: 'ANT',
-              })}
-              )
+              ({formatTokens(tokensToStake.toFixed(0))})
             </p>
           </div>
         </div>
@@ -245,16 +248,11 @@ function ChangeSupportModal({
             margin-top: ${4 * GU}px;
           `}
         >
-          You have{' '}
-          {TokenAmount.format(totalAvailableTokens.toFixed(0), 18, {
-            symbol: 'ANT',
-          })}{' '}
-          tokens ({percentageAvailable}% of your balance) available to support
-          this proposal. You are supporting other proposals with{' '}
-          {TokenAmount.format(amountInOtherProposals.toFixed(0), 18, {
-            symbol: 'ANT',
-          })}{' '}
-          locked tokens ({percentageStaked}% of your balance).
+          You have {formatTokens(totalAvailableTokens.toFixed(0))} tokens (
+          {percentageAvailable}% of your balance) available to support this
+          proposal. You are supporting other proposals with{' '}
+          {formatTokens(amountInOtherProposals.toFixed(0))} locked tokens (
+          {percentageStaked}% of your balance).
         </Info>
 
         <Button
@@ -273,7 +271,7 @@ function ChangeSupportModal({
   )
 }
 
-function AntToken() {
+function TokenLogo() {
   return (
     <div
       css={`
@@ -282,7 +280,7 @@ function AntToken() {
       `}
     >
       <img
-        src={antLogo}
+        src={tokenLogo}
         width="32px"
         css={`
           margin-bottom: ${1.25 * GU}px;
@@ -294,7 +292,7 @@ function AntToken() {
           margin-left: ${1 * GU}px;
         `}
       >
-        ANT
+        CSTK
       </p>
     </div>
   )

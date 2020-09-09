@@ -189,7 +189,6 @@ export function useTokenBalances(account, token, timer = 3000) {
     }
 
     let cancelled = false
-    let timeoutId
 
     const fetchAccountStakeBalance = async () => {
       try {
@@ -220,7 +219,6 @@ export function useTokenBalances(account, token, timer = 3000) {
 
     return () => {
       cancelled = true
-      clearTimeout(timeoutId)
     }
   }, [account, balances, tokenContract, token.id])
 

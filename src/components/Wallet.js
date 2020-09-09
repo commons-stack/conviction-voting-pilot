@@ -83,9 +83,9 @@ function Wallet() {
         <div>
           <Balance
             amount={accountBalance}
-            decimals={18}
+            decimals={stakeToken.decimals}
             label="Balance"
-            symbol="ANT"
+            symbol={stakeToken.symbol}
           />
           <LineSeparator border={theme.border} />
           <Balance

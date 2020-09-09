@@ -51,12 +51,23 @@ const Metrics = React.memo(function Metrics({
 
   const carouselContent = useMemo(
     () => [
-      <CarouselBalance label="Total" amount={accountBalance} symbol="CSTK" />,
-      <CarouselBalance label="Active" amount={myActiveTokens} symbol="CSTK" />,
+      <CarouselBalance
+        label="Total"
+        amount={accountBalance}
+        symbol="CSTK"
+        decimals="0"
+      />,
+      <CarouselBalance
+        label="Active"
+        amount={myActiveTokens}
+        symbol="CSTK"
+        decimals="0"
+      />,
       <CarouselBalance
         label="Inactive"
         amount={inactiveTokens}
         symbol="CSTK"
+        decimals="0"
       />,
     ],
     [accountBalance, myActiveTokens, inactiveTokens]

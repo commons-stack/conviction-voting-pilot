@@ -222,9 +222,9 @@ function ProposalDetail({
                         requestedAmount,
                         requestToken.decimals
                       )}{' '}
-                      ANT out of{' '}
+                      {requestToken.symbol} out of{' '}
                       {formatTokenAmount(vaultBalance, requestToken.decimals)}{' '}
-                      ANT currently in the common pool.
+                      {requestToken.symbol} currently in the common pool.
                     </p>
                   )}
                   <div
