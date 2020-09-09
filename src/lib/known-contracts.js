@@ -1,5 +1,5 @@
 import ercTokenAbi from '../abi/ercToken.json'
-import env from '../environment'
+import { getDefaultChain } from '../local-settings'
 
 const KNOWN_CONTRACTS_BY_ENV = new Map([
   [
@@ -19,7 +19,7 @@ const KNOWN_CONTRACTS_BY_ENV = new Map([
 const ABIS = new Map([['TOKEN_ANT', ercTokenAbi]])
 
 export function getKnownContract(name) {
-  const knownContracts = KNOWN_CONTRACTS_BY_ENV.get(env('CHAIN_ID')) || {}
+  const knownContracts = KNOWN_CONTRACTS_BY_ENV.get(getDefaultChain()) || {}
   return [knownContracts[name] || null, ABIS.get(name) || []]
 }
 

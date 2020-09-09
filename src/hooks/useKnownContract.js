@@ -3,7 +3,7 @@ import {
   getDefaultProvider as getEthersDefaultProvider,
 } from 'ethers'
 import { getKnownContract } from '../lib/known-contracts'
-import env from '../environment'
+import { getDefaultChain } from '../local-settings'
 import { getNetwork } from '../networks'
 
 const readOnlyContractsCache = new Map()
@@ -16,7 +16,7 @@ export function useReadOnlyContract(name) {
   }
 
   const { ensRegistry: ensAddress, chainId, type: networkName } = getNetwork(
-    env('CHAIN_ID')
+    getDefaultChain()
   )
 
   const defaultProvider = getEthersDefaultProvider({

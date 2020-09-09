@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import ConvictionVoting from '@1hive/connect-conviction-voting'
 import { connect } from '@aragon/connect'
-import env from '../environment'
 import { getNetwork } from '../networks'
 import BigNumber from '../lib/bigNumber'
 import { getAppAddressByName } from '../lib/data-utils'
@@ -39,7 +38,7 @@ export function useOrganzation() {
     let cancelled = false
 
     const fetchOrg = async () => {
-      const { generalSubgraphUrl, orgAddress } = getNetwork(env('CHAIN_ID'))
+      const { generalSubgraphUrl, orgAddress } = getNetwork(getDefaultChain())
 
       const organization = await connect(orgAddress, [
         'thegraph',
@@ -77,7 +76,7 @@ export function useAppData(organization) {
     const fetchAppData = async () => {
       const apps = await organization.apps()
       const permissions = await organization.permissions()
-      const { defaultSubgraphUrl } = getNetwork(env('CHAIN_ID'))
+      const { defaultSubgraphUrl } = getNetwork(getDefaultChain())
 
       const convictionApp = apps.find(app => app.name === APP_NAME)
 
