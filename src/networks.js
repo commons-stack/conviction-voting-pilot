@@ -30,7 +30,7 @@ const networks = {
     defaultSubgraphUrl:
       'https://api.thegraph.com/subgraphs/name/1hive/aragon-c-v-beta-xdai',
     name: 'xDai',
-    orgAddress: '0x1cDC45012c4A20FF96a273e83B9C4173948F8b4d',
+    orgAddress: '0x1D7Ac94b1713E17bFA2e1C96d832329b4B79B404',
     type: 'xdai',
   },
 }
