@@ -93,7 +93,7 @@ function ConvictionBanner() {
                   top: 1px;
                 }
               `}
-              href="https://medium.com/commonsstack"
+              href="https://medium.com/commonsstack/cstk-token-holders-can-now-use-conviction-voting-on-xdai-5090fdc3b8ad"
             >
               Learn more
             </ButtonBase>

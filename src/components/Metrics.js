@@ -207,7 +207,7 @@ const Metrics = React.memo(function Metrics({
             symbol="CSTK"
           />
         </MetricContainer>
-        <Metric label="Proposals" value={amountOfProposals} />
+        <Metric label="Proposals" value={amountOfProposals - 1} />
       </Box>
     </>
   )

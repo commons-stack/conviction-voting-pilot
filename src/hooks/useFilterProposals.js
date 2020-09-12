@@ -76,12 +76,13 @@ const useFilterProposals = (proposals, myStakes) => {
           proposal
         )
         const proposalTypeStatus = getProposalType(proposal)
-
+        console.log(proposal)
         return (
           testExecutionFilter(executionFilter, proposalExecutionStatus) &&
           testTypeFilter(typeFilter, proposalTypeStatus) &&
           testSupportFilter(supportFilter, proposalSupportStatus) &&
-          testSearchFilter(proposal.name, textSearch)
+          testSearchFilter(proposal.name, textSearch) &&
+          proposal.id !== '1'
         )
       }),
     [
