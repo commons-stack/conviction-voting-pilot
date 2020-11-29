@@ -28,9 +28,9 @@ const networks = {
     ensRegistry: '0xaafca6b0c89521752e559650206d7c925fd0e530',
     defaultEthNode: 'https://xdai.poanetwork.dev/',
     defaultSubgraphUrl:
-      'https://api.thegraph.com/subgraphs/name/1hive/aragon-c-v-beta-xdai',
+      'https://api.thegraph.com/subgraphs/name/1hive/aragon-conviction-voting-xdai',
     name: 'xDai',
-    orgAddress: '0x1D7Ac94b1713E17bFA2e1C96d832329b4B79B404',
+    orgAddress: '0xEf1dd9ca619C3603a1A0B80345597152D5f8407F',
     type: 'xdai',
   },
 }

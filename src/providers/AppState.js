@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { bigNum } from '../lib/bigNumber'
 import {
   useAppData,
-  useVaultBalance,
+  // useVaultBalance,
   useOrganzation,
   useTokenBalances,
 } from '../hooks/useOrgHooks'
@@ -28,7 +28,7 @@ function AppStateProvider({ children }) {
     ...appData
   } = useAppData(organization)
 
-  const vaultBalance = useVaultBalance(installedApps, requestToken)
+  const vaultBalance = bigNum(0) // useVaultBalance(installedApps, requestToken)
 
   const { balance, totalSupply } = useTokenBalances(account, stakeToken)
 
