@@ -3,6 +3,9 @@
   "homepage": "./",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "10.x"
+  },
   "dependencies": {
     "3box": "^1.21.0",
     "@1hive/connect-conviction-voting": "^0.2.2",
