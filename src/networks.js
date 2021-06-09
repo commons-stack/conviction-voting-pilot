@@ -30,7 +30,7 @@ const networks = {
     defaultSubgraphUrl:
       'https://api.thegraph.com/subgraphs/name/1hive/aragon-conviction-voting-xdai',
     name: 'xDai',
-    orgAddress: '0xdd6726E10C677C5074E96dFa3Bb8608a0e0EaDC7',
+    orgAddress: '0xaa628d99357283aaa035f757e1a8c5f9a94e0798',
     type: 'xdai',
   },
 }
